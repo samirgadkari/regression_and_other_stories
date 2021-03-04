@@ -1,0 +1,32 @@
+---
+title: "Ch_1_Overview"
+author: "Samir Gadkari"
+date: "3/3/2021"
+output: html_document
+---
+
+```{r message=FALSE, warning=TRUE}
+library("rstanarm")
+library("tidyverse")
+```
+
+```{r}
+hibbs <- read.table("../ROS-Examples/ElectionsEconomy/data/hibbs.dat", 
+                    header = TRUE)
+M1 <- stan_glm(vote ~ growth, data = hibbs)
+# coef(M1)
+
+hibbs %>%
+  ggplot(aes(growth, vote)) +
+  geom_point() +
+  xlab("Average recent growth in personal income") +
+  ylab("Incumbent party's vote share") +
+  geom_abline(intercept = coef(M1)[[1]], 
+              slope = coef(M1)[[2]],
+              color = "red")
+```
+
+```{r}
+print(M1)
+```
+
